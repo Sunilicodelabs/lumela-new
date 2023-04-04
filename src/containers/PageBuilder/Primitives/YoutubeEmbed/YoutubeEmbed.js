@@ -2,11 +2,12 @@ import React from 'react';
 import { string } from 'prop-types';
 import classNames from 'classnames';
 
-import { lazyLoadWithDimensions } from '../../../../util/uiHelpers.js';
+
 
 import { AspectRatioWrapper } from '../../../../components/index.js';
 
 import css from './YoutubeEmbed.module.css';
+import { lazyLoadWithDimensions } from '../../../../util/uiHelpers.js';
 
 const RADIX = 10;
 const BLACK_BG = '#000000';

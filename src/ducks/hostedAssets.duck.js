@@ -76,7 +76,7 @@ export const pageAssetsError = error => ({
 
 export const fetchAppAssets = (assets, version) => (dispatch, getState, sdk) => {
   dispatch(appAssetsRequested());
-
+console.log('assets', assets,version)
   // If version is given fetch assets by the version,
   // otherwise default to "latest" alias
   const fetchAssets = version
@@ -87,6 +87,7 @@ export const fetchAppAssets = (assets, version) => (dispatch, getState, sdk) => 
 
   return Promise.all(sdkAssets)
     .then(responses => {
+      console.log('responses', responses)
       const version = responses[0]?.data?.meta?.version;
       dispatch(appAssetsSuccess(assets, version));
 
@@ -126,9 +127,10 @@ export const fetchPageAssets = (assets, hasFallback) => (dispatch, getState, sdk
 
   const assetEntries = Object.entries(assets);
   const sdkAssets = assetEntries.map(([key, assetPath]) => fetchAssets(assetPath));
-
+console.log('sdkAssets', sdkAssets)
   return Promise.all(sdkAssets)
     .then(responses => {
+      console.log('responses', responses)
       // Returned value looks like this for a single asset with name: "about-page":
       // {
       //    "about-page": {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { arrayOf, func, node, oneOf, shape, string } from 'prop-types';
-
+import Collapsible from 'react-collapsible';
+import css from './BlockBuilder.module.css';
 // Block components
 import BlockDefault from './BlockDefault';
 
@@ -17,7 +18,7 @@ const defaultBlockComponents = {
 ////////////////////
 
 const BlockBuilder = props => {
-  const { blocks, options, ...otherProps } = props;
+  const { blocks, options, id, ...otherProps } = props;
 
   // Extract block & field component mappings from props
   // If external mapping has been included for fields
@@ -33,10 +34,36 @@ const BlockBuilder = props => {
   // Selection of Block components
   // Combine component-mapping from props together with the default one:
   const components = { ...defaultBlockComponents, ...blockComponents };
-
   return (
-    <>
-      {blocks.map(block => {
+    <> 
+    
+      {id == 'faq' ? blocks.map(block => {
+        const config = components[block.blockType];
+        const Block = config?.component;
+        if (Block) {
+          return <div  className={css.faqContent}>
+                <Collapsible
+                  trigger={
+                   <> <h1>{block.title.content}</h1>
+                   <svg width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <ellipse cx="15.5" cy="15" rx="15.5" ry="15" fill="#FAA05A"/>
+                   <line x1="15.5" y1="5" x2="15.5" y2="25" stroke="#303030"/>
+                   <line x1="5" y1="15.5" x2="26" y2="15.5" stroke="#303030"/>
+                   </svg></>
+                  }
+                >
+                  <h6>Details</h6>
+                </Collapsible>
+          
+
+            {/* <Block key={block.blockId} {...block} {...blockOptionsMaybe} {...otherProps} />  */}
+            </div>;
+        } else {
+          // If the block type is unknown, the app can't know what to render
+          console.warn(`Unknown block type (${block.blockType}) detected.`);
+          return null;
+        }
+      }) : blocks.map(block => {
         const config = components[block.blockType];
         const Block = config?.component;
         if (Block) {

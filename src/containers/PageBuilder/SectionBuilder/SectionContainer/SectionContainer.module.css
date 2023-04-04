@@ -1,21 +1,28 @@
 @import '../../../../styles/customMediaQueries.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: 'MADE Sunflower';
+  src: url('../../../../assets/fonts/MADE\ Sunflower\ PERSONAL\ USE.otf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
 .root {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   width: 100%;
   position: relative;
-
-  &:nth-of-type(odd) {
+ background: #ffffff;
+  /* &:nth-of-type(odd) {
     background-color: #fafafa;
-  }
+  } */
 }
 
 .sectionContent {
   padding: 32px 0;
   position: relative;
-
+  max-width: 1320px;
+  margin: auto;
   @media (--viewportMedium) {
     padding: 64px 0;
   }
@@ -27,4 +34,540 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+:global(#hero) {
+  max-width: 100%;
+    margin: auto;
+    background: #ffffff;
+  & > div:last-child {
+    padding: 117px 0 124px;
+    @media (max-width: 767px) {
+      padding: 60px 0 60px;
+    }
+  }
+  & > div{
+    & img{
+      object-position: top;
+    }
+  }
+  & a {
+    background: #0b63ff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #fcf6ec;
+    @media (max-width: 767px) {
+      font-size: 16px;
+    line-height: 20px;
+    }
+  }
+  & > div:last-child > div {
+    display: block;
+    & > div:nth-child(2) {
+      width: max-content;
+      display: inline-block;
+    }
+    & > div:nth-child(3) {
+      width: max-content;
+      display: inline-block;
+      margin-left: 31px;
+      @media (max-width: 767px) {
+        margin-left: 0px;
+        display: block;
+      }
+    }
+  }
+  & h2 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #284dcf;
+    max-width: 492px;
+    margin: 0 0 42px;
+    @media (max-width: 767px) {
+      margin: 0 0 24px;
+      font-size: 30px;
+      line-height: 40px;
+    }
+  }
+
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 27px;
+    color: #ffffff;
+    max-width: 455px;
+    margin: 0 0 42px;
+    @media (max-width: 767px) {
+      margin: 0 0 24px;
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+}
+:global(#description) {
+  & > div {
+    padding: 53px 0 93px;
+    @media (max-width: 767px) {
+      padding: 32px 0 32px;
+    }
+  }
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #413f3f;
+    max-width: 600px;
+    @media (max-width: 767px) {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+}
+:global(#attract-new-client) {
+  position: relative;
+  & > div {
+    padding: 0px 0 120px;
+    @media (max-width: 767px) {
+      padding: 0px 0 80px;
+    }
+  }
+  & > div > div > div:last-child {
+    position: absolute;
+    z-index: 111111;
+    top: 99px;
+    right: 49%;
+    height: 365px;
+    width: 168px;
+    @media (max-width: 1300px) {
+      height: 315px;
+      width: 11%;
+    }
+    @media (max-width: 1023px) {
+      width: 20%;
+      top: 6%;
+      right: 5%;
+    }
+    & img{
+      object-fit: unset;
+    }
+  }
+  & > div > div > div:first-child {
+    display: flex;
+    gap: 182px;
+    flex-direction: row;
+    @media (max-width: 1300px) {
+      gap: 132px;
+    }
+    @media (max-width: 1023px) {
+      gap: 64px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    & > div {
+      &:first-child {
+        width: 48%;
+        @media (max-width: 1023px) {
+          width: 80%;
+        }
+      }
+      &:last-child {
+        width: 52%;
+        @media (max-width: 1023px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+  & h1 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #413f3f;
+    text-transform: capitalize;
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      line-height: 38px;
+    }
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #413f3f;
+    @media (max-width: 1200px) {
+      font-size: 20px;
+      line-height: 25px;
+    }
+    @media (max-width: 767px) {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+}
+:global(#handle-admin-market) {
+  position: relative;
+  & > div {
+    padding: 0px 0 120px;
+    @media (max-width: 767px) {
+      padding: 0px 0 80px;
+    }
+  }
+  & > div > div > div:last-child {
+    position: absolute;
+    z-index: 111111;
+    top: 160px;
+    right: 5px;
+    height: 365px;
+    width: 168px;
+    @media (max-width: 1300px) {
+      height: 315px;
+      width: 11%;
+      right: 2%;
+    }
+    @media (max-width: 1023px) {
+      width: 20%;
+      top: 6%;
+      right: 11%;
+    }
+    & img{
+      object-fit: unset;
+    }
+  }
+  & > div > div > div:first-child {
+    display: flex;
+    gap: 65px;
+    margin-right: 8%;
+    @media (max-width: 1023px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    & > div {
+      &:first-child {
+        width: 48%;
+        @media (max-width: 1023px) {
+          width: 80%;
+        }
+      }
+      &:last-child {
+        width: 52%;
+        @media (max-width: 1023px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+  & h1 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #413f3f;
+    text-transform: capitalize;
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      line-height: 38px;
+    }
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #413f3f;
+    @media (max-width: 1200px) {
+      font-size: 20px;
+      line-height: 25px;
+    }
+    @media (max-width: 767px) {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+}
+:global(#better-advertising) {
+  position: relative;
+  & > div {
+    padding: 0px 0 120px;
+    @media (max-width: 1023px) {
+      padding: 0px 0 48px;
+    }
+  }
+  & > div > div > div:last-child {
+    position: absolute;
+    z-index: 111111;
+    top: 107px;
+    right: 54%;
+    height: 365px;
+    width: 168px;
+    @media (max-width: 1300px) {
+      height: 315px;
+      width: 11%;
+    }
+    @media (max-width: 1023px) {
+      width: 20%;
+      top: 11%;
+      right: 7%;
+    }
+    & img{
+      object-fit: unset;
+    }
+  }
+  & > div > div > div:first-child {
+    display: flex;
+    gap: 165px;
+    flex-direction: row;
+    @media (max-width: 1300px) {
+      gap: 115px;
+    }
+    @media (max-width: 1023px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 64px;
+    }
+    & > div {
+      &:first-child {
+        width: 43%;
+        @media (max-width: 1023px) {
+          width: 80%;
+        }
+      }
+      &:last-child {
+        width: 57%;
+        @media (max-width: 1023px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+  & h1 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #413f3f;
+    text-transform: capitalize;
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      line-height: 38px;
+    }
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #413f3f;
+    @media (max-width: 1200px) {
+      font-size: 20px;
+      line-height: 25px;
+    }
+    @media (max-width: 767px) {
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+}
+:global(#how-to-get-started) {
+  background: #F0F0F0;
+  position: relative;
+  & header {
+    display: block;
+  }
+  & > div {
+    padding: 64px 0 102px;
+    @media (max-width: 1360px) {
+      padding: 64px 20px 102px;
+    }
+    @media (max-width: 767px) {
+      padding: 48px 20px 64px;
+    }
+  }
+  & > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 30px;
+  }
+  & > div > div > div {
+    background: #91d6d5;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    height: 86px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 233px;
+    &:last-child {
+      background: #faa05a;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 15px;
+      max-width: 165px;
+      height: 45px;
+      border: none;
+      & h3 {
+        color: #fcf6ec;
+      }
+    }
+  }
+  & h1 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #413f3f;
+    margin: 0 auto;
+    text-transform: capitalize;
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      line-height: 38px;
+    }
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+  & h3 {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: #413f3f;
+    @media (max-width: 1023px) {
+      font-size: 16px;
+      line-height: 20px;
+    }
+  }
+  & p {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #413f3f;
+    text-align: left;
+    padding-left: 22px;
+    margin: 90px 0 0;
+    @media (max-width: 1200px) {
+      margin: 60px 0 0;
+      font-size: 20px;
+      line-height: 25px;
+    }
+    @media (max-width: 767px) {
+      margin: 32px 0 0;
+      font-size: 16px;
+      line-height: 18px;
+      padding-left: 0px;
+    }
+  }
+}
+:global(#faq) {
+  position: relative;
+  & > div {
+    padding: 0px;
+    display: flex;
+    padding: 90px 0 64px;
+    @media (max-width: 1023px) {
+      flex-direction: column;
+      padding: 48px 20px;
+      gap: 32px;
+    }
+  }
+  & h1 {
+    font-family: 'MADE Sunflower';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 58px;
+    text-align: center;
+    color: #454343;
+    text-transform: capitalize;
+    cursor: pointer;
+    @media (max-width: 1200px) {
+      font-size: 30px;
+      line-height: 38px;
+    }
+    @media (max-width: 767px) {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+  & > div > div {
+    padding: 0;
+    margin-left: 0;
+    width: 65%;
+    gap: 0;
+    @media (max-width: 1023px) {
+      width: 100%;
+      margin-left: auto;
+    }
+    & h1 {
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 29px;
+      text-align: left;
+      color: #000000;
+      @media (max-width: 767px) {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+    & h6 {
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 25px;
+      text-align: left;
+      color: #000000;
+      margin: 12px 0 16px;
+      @media (max-width: 767px) {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+  }
 }

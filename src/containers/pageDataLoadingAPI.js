@@ -17,11 +17,11 @@ import { loadData as ProfilePageLoader } from './ProfilePage/ProfilePage.duck';
 import { loadData as SearchPageLoader } from './SearchPage/SearchPage.duck';
 import { loadData as StripePayoutPageLoader } from './StripePayoutPage/StripePayoutPage.duck';
 import { loadData as TermsOfServicePageLoader } from './TermsOfServicePage/TermsOfServicePage.duck';
+import { loadData as BusinessLandingPageLoader } from './BusinessLandingPage/BusinessLandingPage.duck';
 import {
   loadData as TransactionPageLoader,
   setInitialValues as TransactionPageInitialValues,
 } from './TransactionPage/TransactionPage.duck';
-
 const getPageDataLoadingAPI = () => {
   return {
     AuthenticationPage: {
@@ -29,6 +29,9 @@ const getPageDataLoadingAPI = () => {
     },
     LandingPage: {
       loadData: LandingPageLoader,
+    },
+    BusinessLandingPage: {
+      loadData: BusinessLandingPageLoader,
     },
     CheckoutPage: {
       setInitialValues: CheckoutPageInitialValues,

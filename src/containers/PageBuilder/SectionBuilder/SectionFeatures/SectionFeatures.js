@@ -59,6 +59,7 @@ const SectionFeatures = props => {
           })}
         >
           <BlockBuilder
+            sectionId={sectionId}
             rootClassName={css.block}
             ctaButtonClass={defaultClasses.ctaButton}
             blocks={blocks}

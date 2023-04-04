@@ -49,14 +49,14 @@ const drawFuzzyCircle = (mapsConfig, center) => {
   const circleStrokeColor = formatColorFromString(strokeColor);
   const circleStrokeOpacity = convertOpacity(DEFAULT_STROKE_OPACITY);
   const circleFill = formatColorFromString(fillColor);
-  const circleFillOpacity = convertOpacity(fillOpacity || DEFAULT_FILL_OPACITY);
+  const circlefillOpacity = convertOpacity(fillOpacity || DEFAULT_FILL_OPACITY);
 
   // Encoded polyline string
   const encodedPolyline = polyline.encode(circlePolyline(center, circleRadius));
 
   const polylineGraphicTokens = [
     `color:0x${circleStrokeColor}${circleStrokeOpacity}`,
-    `fillcolor:0x${circleFill}${circleFillOpacity}`,
+    `fillcolor:0x${circleFill}${circlefillOpacity}`,
     `weight:${circleStrokeWeight}`,
     `enc:${encodedPolyline}`,
   ];

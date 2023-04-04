@@ -24,7 +24,7 @@ const defaultConfig = {
   listingMinimumPriceSubUnits: 500,
 
   // Marketplace name is needed for microcopy and in meta tags (bots and social media sharing reads those)
-  marketplaceName: 'Biketribe',
+  marketplaceName: 'Yogatime',
 
   // Modify Stripe configuration in stripeConfig.js
   // - picks REACT_APP_STRIPE_PUBLISHABLE_KEY from environment variables

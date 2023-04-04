@@ -55,8 +55,10 @@ const render = (store, shouldHydrate) => {
   // immediately. Otherwise wait for the flag to be loaded and render
   // when auth information is present.
   const state = store.getState();
-  const cdnAssetsVersion = state.hostedAssets.version;
-  const authInfoLoaded = state.auth.authInfoLoaded;
+  console.log('state', state)
+  const cdnAssetsVersion = state?.hostedAssets?.version;
+  console.log('cdnAssetsVersion', cdnAssetsVersion)
+  const authInfoLoaded = state?.auth?.authInfoLoaded;
   const info = authInfoLoaded ? Promise.resolve({}) : store.dispatch(authInfo());
   info
     .then(() => {

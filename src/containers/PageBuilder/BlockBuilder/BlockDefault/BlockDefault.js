@@ -6,6 +6,8 @@ import Field, { hasDataInFields } from '../../Field';
 import BlockContainer from '../BlockContainer';
 
 import css from './BlockDefault.module.css';
+import lomelaVideo from '../../../../assets/video/Lumela_video.mp4';
+import ReactMuxPlayer from '../../../../components/ReactMuxPlayer/ReactMuxPlayer';
 
 const FieldMedia = props => {
   const { className, media, sizes, options } = props;
@@ -31,18 +33,28 @@ const BlockDefault = props => {
     media,
     responsiveImageSizes,
     options,
+    sectionId,
   } = props;
   const classes = classNames(rootClassName || css.root, className);
   const hasTextComponentFields = hasDataInFields([title, text, callToAction], options);
-
+  const settings = {
+    fluid: false,
+    width:  478,
+    height:  416,
+    videos: [lomelaVideo]
+  };
   return (
     <BlockContainer id={blockId} className={classes}>
-      <FieldMedia
+      {sectionId == 'better-advertising' && blockId == 'block1'? 
+     <div className={css.videoContainer}>
+      <ReactMuxPlayer settings={settings}/>
+     </div>
+      :<FieldMedia
         media={media}
         sizes={responsiveImageSizes}
         className={mediaClassName}
         options={options}
-      />
+      />}
       {hasTextComponentFields ? (
         <div className={classNames(textClassName, css.text)}>
           <Field data={title} options={options} />
