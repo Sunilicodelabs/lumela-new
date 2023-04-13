@@ -26,7 +26,7 @@ const IconSpinner = props => {
           repeatCount="indefinite"
         />
         <animate
-          attributeName="stroke-dasharray"
+          attributeName="strokeDasharray"
           calcMode="linear"
           values="9 56;46 14;9 56"
           keyTimes="0;0.5;1"

@@ -1,59 +1,66 @@
 import React, { Component, useEffect } from 'react';
-import { array, arrayOf, bool, func, number, object, oneOf, shape, string } from 'prop-types';
+import { array, bool, func, number, object, oneOf, shape, string } from 'prop-types';
+import { compose } from 'redux';
+// import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
+// import config from '../../config';
 
-// Import configs and util modules
-import { useConfiguration } from '../../../context/configurationContext';
-import { useRouteConfiguration } from '../../../context/routeConfigurationContext';
-import { FormattedMessage, intlShape, useIntl } from '../../../util/reactIntl';
-import { createResourceLocatorString } from '../../../util/routes';
-import { withViewport } from '../../../util/uiHelpers';
-import {
-  SCHEMA_TYPE_ENUM,
-  SCHEMA_TYPE_MULTI_ENUM,
-  SCHEMA_TYPE_TEXT,
-  SCHEMA_TYPE_LONG,
-  SCHEMA_TYPE_BOOLEAN,
-  propTypes,
-} from '../../../util/types';
+// import { createResourceLocatorString } from '../../util/routes';
+// import { withViewport } from '../../util/contextHelpers';
 import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
   LISTING_PAGE_PARAM_TYPES,
 } from '../../../util/urlHelpers';
 import { ensureCurrentUser, ensureListing } from '../../../util/data';
-import { BOOKING_PROCESS_NAME, isBookingProcess } from '../../../transactions/transaction';
 
-// Import shared components
-import {
-  Heading,
-  Modal,
-  NamedRedirect,
-  Tabs,
-  StripeConnectAccountStatusBox,
-  StripeConnectAccountForm,
-} from '../../../components';
+import { Modal, NamedRedirect, Tabs, StripeConnectAccountStatusBox, StripeConnectAccountForm } from '../../../components';
 
-// Import modules from this directory
+
 import EditListingWizardTab, {
-  DETAILS,
-  PRICING,
-  PRICING_AND_STOCK,
-  DELIVERY,
-  LOCATION,
-  AVAILABILITY,
+  DESCRIPTION,
+  OFFERS,
+  TEAM_SIZE,
+  HAIR_TEXTURES,
   PHOTOS,
+  AVAILABILITY,
+  PRICING,
+  BOOKING_SYSTEM,
+  SKIN_TONES,
+  SKIN_TYPES
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import routeConfiguration from '../../../routing/routeConfiguration';
+import { createResourceLocatorString } from '../../../util/routes';
+import { withViewport } from '../../../util/uiHelpers';
+import { propTypes } from '../../../util/types';
+import defaultConfig, { enableAvailability } from '../../../config/configDefault';
+import { intlShape } from '../../../util/reactIntl';
+
+
+// Show availability calendar only if environment variable availabilityEnabled is true
+const availabilityMaybe = enableAvailability ? [AVAILABILITY] : [];
 
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-const TABS_DETAILS_ONLY = [DETAILS];
-const TABS_PRODUCT = [DETAILS, PRICING_AND_STOCK, DELIVERY, PHOTOS];
-const TABS_BOOKING = [DETAILS, LOCATION, PRICING, AVAILABILITY, PHOTOS];
-const TABS_ALL = [...TABS_PRODUCT, ...TABS_BOOKING];
+// Note 3: in FTW-hourly template we don't use the POLICY tab so it's commented out.
+// If you want to add a free text field to your listings you can enable the POLICY tab
+
+export const TABS = [
+  DESCRIPTION,
+  PHOTOS,
+  OFFERS,
+  HAIR_TEXTURES,
+  SKIN_TONES,
+  SKIN_TYPES,
+  TEAM_SIZE,
+  ...availabilityMaybe,
+  BOOKING_SYSTEM,
+  // PRICING,
+];
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -61,97 +68,30 @@ const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 const STRIPE_ONBOARDING_RETURN_URL_SUCCESS = 'success';
 const STRIPE_ONBOARDING_RETURN_URL_FAILURE = 'failure';
 
-/**
- * Return translations for wizard tab: label and submit button.
- *
- * @param {Object} intl
- * @param {string} tab name of the tab/panel in the wizard
- * @param {boolean} isNewListingFlow
- * @param {string} processName
- */
-const tabLabelAndSubmit = (intl, tab, isNewListingFlow, processName) => {
-  const processNameString = isNewListingFlow ? `${processName}.` : '';
-  const newOrEdit = isNewListingFlow ? 'new' : 'edit';
-
-  let labelKey = null;
-  let submitButtonKey = null;
-  if (tab === DETAILS) {
-    labelKey = 'EditListingWizard.tabLabelDetails';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveDetails`;
-  } else if (tab === PRICING) {
-    labelKey = 'EditListingWizard.tabLabelPricing';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePricing`;
-  } else if (tab === PRICING_AND_STOCK) {
-    labelKey = 'EditListingWizard.tabLabelPricingAndStock';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePricingAndStock`;
-  } else if (tab === DELIVERY) {
-    labelKey = 'EditListingWizard.tabLabelDelivery';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveDelivery`;
-  } else if (tab === LOCATION) {
-    labelKey = 'EditListingWizard.tabLabelLocation';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveLocation`;
-  } else if (tab === AVAILABILITY) {
-    labelKey = 'EditListingWizard.tabLabelAvailability';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveAvailability`;
+const tabLabel = (intl, tab) => {
+  let key = null;
+  if (tab === DESCRIPTION) {
+    key = 'EditListingWizard.tabLabelDescription';
+  } else if (tab === OFFERS) {
+    key = 'EditListingWizard.tabLabelFeatures';
+  } else if (tab === TEAM_SIZE) {
+    key = 'EditListingWizard.tabLabelPolicy';
+  } else if (tab === HAIR_TEXTURES) {
+    key = 'EditListingWizard.tabLabelLocation';
   } else if (tab === PHOTOS) {
-    labelKey = 'EditListingWizard.tabLabelPhotos';
-    submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.savePhotos`;
+    key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === AVAILABILITY) {
+    key = 'EditListingWizard.tabLabelAvailability';
+  } else if (tab === PRICING) {
+    key = 'EditListingWizard.tabLabelPricing';
+  } else if (tab === BOOKING_SYSTEM) {
+    key = 'EditListingWizard.tabLabelPricing';
+  } else if (tab === SKIN_TONES) {
+    key = 'EditListingWizard.tabLabelPricing';
+  } else if (tab === SKIN_TYPES) {
+    key = 'EditListingWizard.tabLabelPricing';
   }
-
-  return {
-    label: intl.formatMessage({ id: labelKey }),
-    submitButton: intl.formatMessage({ id: submitButtonKey }),
-  };
-};
-
-/**
- * Validate listing fields (in extended data) that are included through configListing.js
- * This is used to check if listing creation flow can show the "next" tab as active.
- *
- * @param {Object} publicData
- * @param {Object} privateData
- */
-const hasValidListingFieldsInExtendedData = (publicData, privateData, config) => {
-  const isValidField = (fieldConfig, fieldData) => {
-    const {
-      key,
-      includeForListingTypes,
-      schemaType,
-      enumOptions = [],
-      saveConfig = {},
-    } = fieldConfig;
-
-    const schemaOptionKeys = enumOptions.map(o => `${o.option}`);
-    const hasValidEnumValue = optionData => {
-      return schemaOptionKeys.includes(optionData);
-    };
-    const hasValidMultiEnumValues = savedOptions => {
-      return savedOptions.every(optionData => schemaOptionKeys.includes(optionData));
-    };
-
-    const isRequired =
-      !!saveConfig.isRequired &&
-      (includeForListingTypes == null || includeForListingTypes.includes(publicData?.listingType));
-    if (isRequired) {
-      const savedListingField = fieldData[key];
-      return schemaType === SCHEMA_TYPE_ENUM
-        ? typeof savedListingField === 'string' && hasValidEnumValue(savedListingField)
-        : schemaType === SCHEMA_TYPE_MULTI_ENUM
-        ? Array.isArray(savedListingField) && hasValidMultiEnumValues(savedListingField)
-        : schemaType === SCHEMA_TYPE_TEXT
-        ? typeof savedListingField === 'string'
-        : schemaType === SCHEMA_TYPE_LONG
-        ? typeof savedListingField === 'number' && Number.isInteger(savedListingField)
-        : schemaType === SCHEMA_TYPE_BOOLEAN
-        ? savedListingField === true || savedListingField === false
-        : false;
-    }
-    return true;
-  };
-  return config.listing.listingFields.reduce((isValid, fieldConfig) => {
-    const data = fieldConfig.scope === 'private' ? privateData : publicData;
-    return isValid && isValidField(fieldConfig, data);
-  }, true);
+  return intl.formatMessage({ id: key });
 };
 
 /**
@@ -162,43 +102,39 @@ const hasValidListingFieldsInExtendedData = (publicData, privateData, config) =>
  *
  * @return true if tab / step is completed.
  */
-const tabCompleted = (tab, listing, config) => {
+const tabCompleted = (tab, listing) => {
   const {
     availabilityPlan,
-    description,
     geolocation,
     price,
     title,
     publicData,
-    privateData,
+    // description,
   } = listing.attributes;
   const images = listing.images;
-  const { listingType, transactionProcessAlias, unitType, shippingEnabled, pickupEnabled } =
-    publicData || {};
-  const deliveryOptionPicked = publicData && (shippingEnabled || pickupEnabled);
 
   switch (tab) {
-    case DETAILS:
-      return !!(
-        description &&
-        title &&
-        listingType &&
-        transactionProcessAlias &&
-        unitType &&
-        hasValidListingFieldsInExtendedData(publicData, privateData, config)
-      );
+    case DESCRIPTION:
+      return !!(title && publicData && publicData.businessName && publicData.email);
+    case OFFERS:
+      return !!(publicData && publicData.offers);
+    case TEAM_SIZE:
+      return !!(publicData.teamSize);
+    case HAIR_TEXTURES:
+      // return !!(geolocation && publicData && publicData.location && publicData.location.address);
+      return !!( publicData.hairTextures);
+    case SKIN_TONES:
+      return !!(publicData.skinTones);
+    case SKIN_TYPES:
+      return !!(publicData.skinTypes);
+    case PHOTOS:
+      return images && images.length > 0 ;
     case PRICING:
       return !!price;
-    case PRICING_AND_STOCK:
-      return !!price;
-    case DELIVERY:
-      return !!deliveryOptionPicked;
-    case LOCATION:
-      return !!(geolocation && publicData?.location?.address);
+      case BOOKING_SYSTEM:
+      return !!(publicData.bookingSystem && publicData.other);
     case AVAILABILITY:
-      return !!availabilityPlan;
-    case PHOTOS:
-      return images && images.length > 0;
+      return !!(availabilityPlan);
     default:
       return false;
   }
@@ -210,18 +146,14 @@ const tabCompleted = (tab, listing, config) => {
  *
  * @param isNew flag if a new listing is being created or an old one being edited
  * @param listing data to be checked
- * @param tabs array of tabs used for this listing. These depend on transaction process.
  *
  * @return object containing activity / editability of different tabs of this wizard
  */
-const tabsActive = (isNew, listing, tabs, config) => {
-  return tabs.reduce((acc, tab) => {
-    const previousTabIndex = tabs.findIndex(t => t === tab) - 1;
-    const validTab = previousTabIndex >= 0;
-    const hasListingType = !!listing?.attributes?.publicData?.listingType;
-    const prevTabComletedInNewFlow = tabCompleted(tabs[previousTabIndex], listing, config);
+const tabsActive = (isNew, listing,filteredTabs) => {
+  return filteredTabs.reduce((acc, tab) => {
+    const previousTabIndex = filteredTabs.findIndex(t => t === tab) - 1;
     const isActive =
-      validTab && !isNew ? hasListingType : validTab && isNew ? prevTabComletedInNewFlow : true;
+      previousTabIndex >= 0 ? !isNew || tabCompleted(filteredTabs[previousTabIndex], listing) : true;
     return { ...acc, [tab]: isActive };
   }, {});
 };
@@ -289,11 +221,12 @@ class EditListingWizard extends Component {
     this.state = {
       draftId: null,
       showPayoutDetails: false,
-      transactionProcessAlias: null,
+      portalRoot: null,
     };
     this.handleCreateFlowTabScrolling = this.handleCreateFlowTabScrolling.bind(this);
     this.handlePublishListing = this.handlePublishListing.bind(this);
     this.handlePayoutModalClose = this.handlePayoutModalClose.bind(this);
+    this.handlePayoutSubmit = this.handlePayoutSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -335,6 +268,17 @@ class EditListingWizard extends Component {
     this.setState({ showPayoutDetails: false });
   }
 
+  handlePayoutSubmit(values) {
+    this.props
+      .onPayoutDetailsSubmit(values)
+      .then(response => {
+        this.props.onManageDisableScrolling('EditListingWizard.payoutModal', false);
+      })
+      .catch(() => {
+        // do nothing
+      });
+  }
+
   render() {
     const {
       id,
@@ -349,7 +293,7 @@ class EditListingWizard extends Component {
       payoutDetailsSaveInProgress,
       payoutDetailsSaved,
       onManageDisableScrolling,
-      onPayoutDetailsChange,
+      onPayoutDetailsFormChange,
       onGetStripeConnectAccountLink,
       getAccountLinkInProgress,
       createStripeAccountError,
@@ -360,8 +304,6 @@ class EditListingWizard extends Component {
       stripeAccountError,
       stripeAccountLinkError,
       currentUser,
-      config,
-      routeConfiguration,
       ...rest
     } = this.props;
 
@@ -372,41 +314,30 @@ class EditListingWizard extends Component {
     const rootClasses = rootClassName || css.root;
     const classes = classNames(rootClasses, className);
     const currentListing = ensureListing(listing);
-    const savedProcessAlias = currentListing.attributes?.publicData?.transactionProcessAlias;
-    const transactionProcessAlias = savedProcessAlias || this.state.transactionProcessAlias;
-    const processName = transactionProcessAlias
-      ? transactionProcessAlias.split('/')[0]
-      : BOOKING_PROCESS_NAME;
+    const { offers } = currentListing&&currentListing.attributes.publicData || {};
 
-    // NOTE: If the listing has invalid configuration in place,
-    // the listing is considered deprecated and we don't allow user to modify the listing anymore.
-    // Instead, operator should do that through Console or Integration API.
-    const existingListingType = currentListing.attributes?.publicData?.listingType;
-    const invalidExistingListingType =
-      existingListingType &&
-      !config.listing.listingTypes.find(config => config.listingType === existingListingType);
-
-    const tabs = invalidExistingListingType
-      ? TABS_DETAILS_ONLY
-      : isBookingProcess(processName)
-      ? TABS_BOOKING
-      : TABS_PRODUCT;
-
-    // Check if wizard tab is active / linkable.
-    // When creating a new listing, we don't allow users to access next tab until the current one is completed.
-    const tabsStatus = tabsActive(isNewListingFlow, currentListing, tabs, config);
+    const newfilterArray = offers && offers.length && offers.map((st) => {
+      if (st == "makeupArtist" || st == "skinSpecialist" || st == "aesthetician") {
+        return "makeupArtist"
+      } else if (st == "hairStylist" || st == "barberShop" || st == "protectiveStyles" || st == "eyebrows" || st == "eyeLashes" || st == "extensions" || st == "locksTwists") {
+        return "hairStylist"
+      } else {
+        return "nails"
+      }
+    });
+    const FilterData = newfilterArray && [...new Set(newfilterArray)];
+    const filteredTabs = FilterData && FilterData.length && FilterData.filter((st) => st == "makeupArtist").length ?
+      TABS.filter((e) => e != HAIR_TEXTURES) : FilterData && FilterData.length && FilterData.filter((st) => st == "hairStylist").length ? TABS.filter((e) => e != SKIN_TONES && e != SKIN_TYPES) : FilterData && FilterData.length && FilterData.filter((st) => st == "nails").length ? TABS.filter((e) => e != SKIN_TONES && e != SKIN_TYPES && e != HAIR_TEXTURES) : TABS;
+     
+    const tabsStatus = tabsActive(isNewListingFlow, currentListing,filteredTabs);
 
     // If selectedTab is not active, redirect to the beginning of wizard
     if (!tabsStatus[selectedTab]) {
-      const currentTabIndex = tabs.indexOf(selectedTab);
-      const nearestActiveTab = tabs
-        .slice(0, currentTabIndex)
+      const currentTabIndex = filteredTabs.indexOf(selectedTab);
+      const nearestActiveTab = filteredTabs.slice(0, currentTabIndex)
         .reverse()
         .find(t => tabsStatus[t]);
 
-      console.log(
-        `You tried to access an EditListingWizard tab (${selectedTab}), which was not yet activated.`
-      );
       return <NamedRedirect name="EditListingPage" params={{ ...params, tab: nearestActiveTab }} />;
     }
 
@@ -414,11 +345,13 @@ class EditListingWizard extends Component {
     const hasViewport = width > 0;
     const hasHorizontalTabLayout = hasViewport && width <= MAX_HORIZONTAL_NAV_SCREEN_WIDTH;
     const hasVerticalTabLayout = hasViewport && width > MAX_HORIZONTAL_NAV_SCREEN_WIDTH;
+    const hasFontsLoaded =
+      hasViewport && document.documentElement.classList.contains('fontsLoaded');
 
     // Check if scrollToTab call is needed (tab is not visible on mobile)
     if (hasVerticalTabLayout) {
       this.hasScrolledToTab = true;
-    } else if (hasHorizontalTabLayout && !this.hasScrolledToTab) {
+    } else if (hasHorizontalTabLayout && !this.hasScrolledToTab && hasFontsLoaded) {
       const tabPrefix = id;
       scrollToTab(tabPrefix, selectedTab);
       this.hasScrolledToTab = true;
@@ -428,23 +361,29 @@ class EditListingWizard extends Component {
       return { name: 'EditListingPage', params: { ...params, tab } };
     };
 
+    const setPortalRootAfterInitialRender = () => {
+      if (!this.state.portalRoot) {
+        this.setState({ portalRoot: document.getElementById('portal-root') });
+      }
+    };
     const formDisabled = getAccountLinkInProgress;
     const ensuredCurrentUser = ensureCurrentUser(currentUser);
     const currentUserLoaded = !!ensuredCurrentUser.id;
     const stripeConnected = currentUserLoaded && !!stripeAccount && !!stripeAccount.id;
 
-    const rootURL = config.marketplaceRootURL;
+    const rootURL = defaultConfig.marketplaceRootURL;
+    const routes = routeConfiguration();
     const { returnURLType, ...pathParams } = params;
     const successURL = createReturnURL(
       STRIPE_ONBOARDING_RETURN_URL_SUCCESS,
       rootURL,
-      routeConfiguration,
+      routes,
       pathParams
     );
     const failureURL = createReturnURL(
       STRIPE_ONBOARDING_RETURN_URL_FAILURE,
       rootURL,
-      routeConfiguration,
+      routes,
       pathParams
     );
 
@@ -477,38 +416,32 @@ class EditListingWizard extends Component {
     }
 
     return (
-      <div className={classes}>
+      <div className={classes} ref={setPortalRootAfterInitialRender}>
         <Tabs
-          rootClassName={css.tabsContainer}
+          // rootClassName={css.tabsContainer}
           navRootClassName={css.nav}
-          tabRootClassName={css.tab}
+          // tabRootClassName={css.tab}
         >
-          {tabs.map(tab => {
-            const tabTranslations = tabLabelAndSubmit(intl, tab, isNewListingFlow, processName);
+          {filteredTabs.map(tab => {
             return (
               <EditListingWizardTab
                 {...rest}
                 key={tab}
                 tabId={`${id}_${tab}`}
-                tabLabel={tabTranslations.label}
-                tabSubmitButtonText={tabTranslations.submitButton}
+                tabLabel={tabLabel(intl, tab)}
                 tabLinkProps={tabLink(tab)}
                 selected={selectedTab === tab}
                 disabled={isNewListingFlow && !tabsStatus[tab]}
                 tab={tab}
+                intl={intl}
                 params={params}
                 listing={listing}
-                marketplaceTabs={tabs}
+                marketplaceTabs={filteredTabs}
                 errors={errors}
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}
                 handlePublishListing={this.handlePublishListing}
                 fetchInProgress={fetchInProgress}
-                onProcessChange={transactionProcessAlias =>
-                  this.setState({ transactionProcessAlias })
-                }
                 onManageDisableScrolling={onManageDisableScrolling}
-                config={config}
-                routeConfiguration={routeConfiguration}
               />
             );
           })}
@@ -519,13 +452,14 @@ class EditListingWizard extends Component {
           onClose={this.handlePayoutModalClose}
           onManageDisableScrolling={onManageDisableScrolling}
           usePortal
+          isAvailabilityPanel={true}
+          containerClassName={css.modalContainer}
         >
           <div className={css.modalPayoutDetailsWrapper}>
-            <Heading as="h2" rootClassName={css.modalTitle}>
-              <FormattedMessage id="EditListingWizard.payoutModalTitleOneMoreThing" />
-              <br />
+            <h1 className={css.modalTitle}>
+              <FormattedMessage id="EditListingWizard.payoutModalTitleOneMoreThing" />{' '}
               <FormattedMessage id="EditListingWizard.payoutModalTitlePayoutPreferences" />
-            </Heading>
+            </h1>
             {!currentUserLoaded ? (
               <FormattedMessage id="StripePayoutPage.loadingData" />
             ) : returnedAbnormallyFromStripe && !stripeAccountLinkError ? (
@@ -550,7 +484,7 @@ class EditListingWizard extends Component {
                   stripeAccountError={stripeAccountError}
                   stripeAccountFetched={stripeAccountFetched}
                   stripeAccountLinkError={stripeAccountLinkError}
-                  onChange={onPayoutDetailsChange}
+                  onChange={onPayoutDetailsFormChange}
                   onSubmit={rest.onPayoutDetailsSubmit}
                   onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink}
                   stripeConnected={stripeConnected}
@@ -607,7 +541,7 @@ EditListingWizard.propTypes = {
     id: string.isRequired,
     slug: string.isRequired,
     type: oneOf(LISTING_PAGE_PARAM_TYPES).isRequired,
-    tab: oneOf(TABS_ALL).isRequired,
+    tab: oneOf(TABS).isRequired,
   }).isRequired,
   stripeAccount: object,
   stripeAccountFetched: bool,
@@ -616,10 +550,6 @@ EditListingWizard.propTypes = {
   listing: shape({
     attributes: shape({
       publicData: object,
-      description: string,
-      geolocation: object,
-      price: object,
-      title: string,
     }),
     images: array,
   }),
@@ -641,8 +571,7 @@ EditListingWizard.propTypes = {
   getAccountLinkInProgress: bool.isRequired,
   payoutDetailsSaveInProgress: bool.isRequired,
   payoutDetailsSaved: bool.isRequired,
-  onPayoutDetailsChange: func.isRequired,
-  onPayoutDetailsSubmit: func.isRequired,
+  onPayoutDetailsFormChange: func.isRequired,
   onGetStripeConnectAccountLink: func.isRequired,
   onManageDisableScrolling: func.isRequired,
 
@@ -652,28 +581,11 @@ EditListingWizard.propTypes = {
     height: number.isRequired,
   }).isRequired,
 
-  // from useIntl
+  // from injectIntl
   intl: intlShape.isRequired,
-
-  // from useConfiguration
-  config: object.isRequired,
-
-  // from useRouteConfiguration
-  routeConfiguration: arrayOf(propTypes.route).isRequired,
 };
 
-const EnhancedEditListingWizard = props => {
-  const config = useConfiguration();
-  const routeConfiguration = useRouteConfiguration();
-  const intl = useIntl();
-  return (
-    <EditListingWizard
-      config={config}
-      routeConfiguration={routeConfiguration}
-      intl={intl}
-      {...props}
-    />
-  );
-};
-
-export default withViewport(EnhancedEditListingWizard);
+export default compose(
+  withViewport,
+  injectIntl
+)(EditListingWizard);

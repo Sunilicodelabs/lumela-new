@@ -2,7 +2,11 @@
 // Configurations related to listing.                  //
 // Main configuration here is the extended data config //
 /////////////////////////////////////////////////////////
-
+import toolsIcon from '../assets/blog1.jpg';
+import color1 from '../assets/Colours1.jpg';
+import color2 from '../assets/Colours2.jpg';
+import color3 from '../assets/Colours3.jpg';
+import color4 from '../assets/Colours4.jpg';
 // NOTE: if you want to change the structure of the data,
 // you should also check src/util/configHelpers.js
 // some validation is added there.
@@ -46,6 +50,8 @@
  *   - isRequired (optional):         Is the field required for providers to fill
  *   - requiredMessage (optional):    Message for those fields, which are mandatory.
  */
+
+
 export const listingFields = [
   {
     key: 'category',
@@ -185,6 +191,149 @@ export const listingFields = [
   // },
 ];
 
+export const skinTypes = [
+  {
+    key: 'acneProne',
+    value: 'Acne Prone',
+    icon: toolsIcon,
+  },
+  {
+    key: 'sensitiveSkin',
+    value: 'Sensitive Skin',
+    icon: toolsIcon,
+  },
+  {
+    key: 'normalSkin',
+    value: 'Normal Skin ',
+    icon: toolsIcon,
+   },
+   {
+    key: 'matureSkin',
+    value: 'Mature Skin',
+    icon: toolsIcon,
+   },
+   {
+    key: 'drySkin',
+    value: 'Dry Skin',
+    icon: toolsIcon,
+   },
+   {
+    key: 'combination ',
+    value: 'Combination ',
+    icon: toolsIcon,
+   },
+];
+
+
+export const skinTones = [
+  {
+    key: 'color1',
+    value: ' ',
+    icon: color1,
+  },
+  {
+    key: 'color2',
+    value: ' ',
+    icon: color2,
+  },
+  {
+    key: 'color3',
+    value: ' ',
+    icon: color3,
+   },
+   {
+    key: 'color4',
+    value: ' ',
+    icon: color4,
+   },
+];
+
+
+export const hairTextures = [
+  {
+    key: 'protective',
+    value: 'Protective',
+    icon: toolsIcon,
+  },
+  {
+    key: 'coily',
+    value: 'Coily',
+    icon: toolsIcon,
+  },
+  {
+    key: 'curly',
+    value: 'Curly',
+    icon: toolsIcon,
+   },
+  {
+    key: 'wavy',
+    value: 'Wavy',
+    icon: toolsIcon,
+  },
+  {
+    key: 'straight',
+    value: 'Straight',
+    icon: toolsIcon,
+  },
+  {
+    key: 'baldShaved',
+    value: 'Bald / Shaved',
+    icon: toolsIcon,
+  },
+];
+
+export const teamSizes = [
+  {
+    key: 'justMe',
+    value: 'Just me',
+    icon: toolsIcon,
+  },
+  {
+    key: '2_4',
+    value: '2-4',
+    icon: toolsIcon,
+  },
+  {
+    key: '4_6',
+    value: '4-6',
+    icon: toolsIcon,
+   },
+];
+
+export const bookingSystem = [
+  {
+    key: 'notCurrenltyUsingaBookingSystem',
+    value: 'Not currenlty using a booking system',
+  },
+  {
+    key: 'kitomba',
+    value: 'Kitomba',
+  },
+  {
+    key: 'gettimley',
+    value: 'Gettimley',
+   },
+  {
+    key: 'schedulista',
+    value: 'Schedulista',
+  },
+  {
+    key: 'squareup',
+    value: 'Squareup',
+  },
+  {
+    key: 'truelocal',
+    value: 'Truelocal',
+  },
+  {
+    key: 'fresha',
+    value: 'Fresha',
+  },
+  {
+    key: 'other',
+    value: 'Other',
+  },
+];
 ///////////////////////////////////////////////////////////////////////
 // Configurations related to listing types and transaction processes //
 ///////////////////////////////////////////////////////////////////////
@@ -262,6 +411,69 @@ export const listingTypes = [
   //   },
   //   stockType: 'multipleItems',
   // },
+];
+
+export const offers = [
+  {
+    key: 'barberShop',
+    value: 'Barber Shop',
+    icon: toolsIcon,
+  },
+  {
+    key: 'hairStylist',
+    value: 'Hair Stylist',
+    icon: toolsIcon,
+  },
+  {
+    key: 'makeupArtist',
+    value: 'Makeup Artist',
+    icon: toolsIcon,
+   },
+  {
+    key: 'protectiveStyles',
+    value: 'Protective Styles',
+    icon: toolsIcon,
+  },
+  {
+    key: 'skinSpecialist',
+    value: 'Skin Specialist',
+    icon: toolsIcon,
+  },
+  {
+    key: 'aesthetician',
+    value: 'Aesthetician',
+    icon: toolsIcon,
+  },
+  {
+    key: 'nails',
+    value: 'Nails',
+    icon: toolsIcon,
+  },
+  {
+    key: 'eyebrows',
+    value: 'Eyebrows',
+    icon: toolsIcon,
+  },
+  {
+    key: 'eyeLashes',
+    value: 'Eye Lashes',
+    icon: toolsIcon,
+  },
+  {
+    key: 'extensions',
+    value: 'Extensions',
+    icon: toolsIcon,
+  },
+  {
+    key: 'locksTwists',
+    value: 'Locks & Twists',
+    icon: toolsIcon,
+  },
+  {
+    key: 'other',
+    value: 'Other',
+    icon: toolsIcon,
+  },
 ];
 
 // SearchPage can enforce listing query to only those listings with valid listingType

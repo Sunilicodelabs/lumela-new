@@ -73,6 +73,7 @@ import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
 
 import css from './ListingPage.module.css';
+import defaultConfig from '../../config/configDefault';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
@@ -236,7 +237,7 @@ export const ListingPageComponent = props => {
     currentListing,
     `${config.layout.listingImage.variantPrefix}-2x`
   ).map(img => img.url);
-  const marketplaceName = config.marketplaceName;
+  const marketplaceName = defaultConfig.marketplaceName;
   const schemaTitle = intl.formatMessage(
     { id: 'ListingPage.schemaTitle' },
     { title, price: formattedPrice, marketplaceName }

@@ -54,6 +54,7 @@ import { TOS_ASSET_NAME, PRIVACY_POLICY_ASSET_NAME } from './AuthenticationPage.
 
 import css from './AuthenticationPage.module.css';
 import { FacebookLogo, GoogleLogo } from './socialLoginLogos';
+import defaultConfig from '../../config/configDefault';
 
 // Social login buttons are needed by AuthenticationForms
 export const SocialLoginButtonsMaybe = props => {
@@ -418,7 +419,7 @@ export const AuthenticationPageComponent = props => {
     </p>
   ) : null;
 
-  const marketplaceName = config.marketplaceName;
+  const marketplaceName = defaultConfig.marketplaceName;
   const schemaTitle = isLogin
     ? intl.formatMessage({ id: 'AuthenticationPage.schemaTitleLogin' }, { marketplaceName })
     : intl.formatMessage({ id: 'AuthenticationPage.schemaTitleSignup' }, { marketplaceName });

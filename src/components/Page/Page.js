@@ -12,6 +12,7 @@ import { canonicalRoutePath } from '../../util/routes';
 import { propTypes } from '../../util/types';
 
 import css from './Page.module.css';
+import defaultConfig from '../../config/configDefault';
 
 const preventDefault = e => {
   e.preventDefault();
@@ -102,7 +103,7 @@ class PageComponent extends Component {
     const canonicalPath = canonicalRoutePath(routeConfiguration, location, shouldReturnPathOnly);
     const canonicalUrl = `${marketplaceRootURL}${canonicalPath}`;
 
-    const marketplaceName = config.marketplaceName;
+    const marketplaceName = defaultConfig.marketplaceName;
     const schemaTitle = intl.formatMessage({ id: 'Page.schemaTitle' }, { marketplaceName });
     const schemaDescription = intl.formatMessage({ id: 'Page.schemaDescription' });
     const pageTitle = title || schemaTitle;

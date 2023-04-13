@@ -29,6 +29,7 @@ import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import NotFoundPage from '../../containers/NotFoundPage/NotFoundPage';
 
 import css from './ProfilePage.module.css';
+import defaultConfig from '../../config/configDefault';
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 
@@ -207,7 +208,7 @@ const ProfilePageComponent = props => {
     ensuredCurrentUser.id && profileUser.id && ensuredCurrentUser.id.uuid === profileUser.id.uuid;
   const { bio, displayName } = profileUser?.attributes?.profile || {};
 
-  const schemaTitleVars = { name: displayName, marketplaceName: config.marketplaceName };
+  const schemaTitleVars = { name: displayName, marketplaceName: defaultConfig.marketplaceName };
   const schemaTitle = intl.formatMessage({ id: 'ProfilePage.schemaTitle' }, schemaTitleVars);
 
   if (userShowError && userShowError.status === 404) {

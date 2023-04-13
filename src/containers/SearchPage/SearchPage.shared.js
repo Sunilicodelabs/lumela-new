@@ -5,6 +5,7 @@ import { createResourceLocatorString } from '../../util/routes';
 import { isAnyFilterActive, parseSelectFilterOptions } from '../../util/search';
 import { createSlug, parse, stringify } from '../../util/urlHelpers';
 import { getStartOf, parseDateFromISO8601, subtractTime } from '../../util/dates';
+import defaultConfig from '../../config/configDefault';
 
 /**
  * Create the name of the query parameter.
@@ -344,7 +345,7 @@ export const createSearchResultSchema = (
   // Schema for search engines (helps them to understand what this page is about)
   // http://schema.org
   // We are using JSON-LD format
-  const marketplaceName = config.marketplaceName;
+  const marketplaceName = defaultConfig.marketplaceName;
   const { address, keywords } = mainSearchData;
   const keywordsMaybe = keywords ? `"${keywords}"` : null;
   const searchTitle =

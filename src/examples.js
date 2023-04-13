@@ -90,7 +90,7 @@ import * as StripePaymentForm from './containers/CheckoutPage/StripePaymentForm/
 import * as FieldTimeZoneSelect from './containers/EditListingPage/EditListingWizard/EditListingAvailabilityPanel/FieldTimeZoneSelect/FieldTimeZoneSelect.example';
 import * as EditListingAvailabilityPlanForm from './containers/EditListingPage/EditListingWizard/EditListingAvailabilityPanel/EditListingAvailabilityPlanForm/EditListingAvailabilityPlanForm.example';
 import * as EditListingAvailabilityExceptionForm from './containers/EditListingPage/EditListingWizard/EditListingAvailabilityPanel/EditListingAvailabilityExceptionForm/EditListingAvailabilityExceptionForm.example';
-import * as EditListingDetailsForm from './containers/EditListingPage/EditListingWizard/EditListingDetailsPanel/EditListingDetailsForm.example';
+
 import * as EditListingDeliveryForm from './containers/EditListingPage/EditListingWizard/EditListingDeliveryPanel/EditListingDeliveryForm.example';
 import * as EditListingLocationForm from './containers/EditListingPage/EditListingWizard/EditListingLocationPanel/EditListingLocationForm.example';
 import * as EditListingPhotosForm from './containers/EditListingPage/EditListingWizard/EditListingPhotosPanel/EditListingPhotosForm.example';
@@ -136,7 +136,6 @@ export {
   CMSSections,
   EditListingAvailabilityPlanForm,
   EditListingAvailabilityExceptionForm,
-  EditListingDetailsForm,
   EditListingDeliveryForm,
   EditListingLocationForm,
   EditListingPhotosForm,

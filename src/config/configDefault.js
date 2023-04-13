@@ -5,6 +5,8 @@ import * as maps from './configMaps';
 import * as branding from './configBranding';
 import * as layout from './configLayout';
 
+
+export const  enableAvailability = process.env.REACT_APP_AVAILABILITY_ENABLED === 'true';
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets to this file.
 const defaultConfig = {

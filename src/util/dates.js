@@ -23,6 +23,15 @@ export const isTimeZoneSupported = () => {
   return !!dtf.resolvedOptions().timeZone;
 };
 
+
+export const resetToStartOfDay = (date, timeZone, offset = 0) => {
+  return moment(date)
+    .clone()
+    .tz(timeZone)
+    .startOf('day')
+    .add(offset, 'days')
+    .toDate();
+};
 /**
  * Detect the default timezone of user's browser.
  * This function can only be called from client side.

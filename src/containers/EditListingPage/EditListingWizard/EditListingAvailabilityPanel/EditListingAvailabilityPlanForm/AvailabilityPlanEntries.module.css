@@ -1,166 +1,253 @@
-@import '../../../../../styles/customMediaQueries.css';
+@import '../../../../styles/propertySets.css';
 
-.weekDay,
-.hasEntries {
-  padding-left: 30px;
-  padding-right: 30px;
-
-  @media (--viewportSmall) {
-    padding-left: 60px;
-    padding-right: 60px;
+.root {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 1.5rem 2rem 2rem 2rem;
+  @media (max-width: 767px) {
+    padding: 1.5rem 1.5rem 2rem 1.5rem;
   }
 }
 
-.weekDay {
-  composes: marketplaceTabNavHorizontalFontStyles from global;
+.heading {
+  margin-top: 0;
+  color: var(--matterColorDark);
+  font-size: 1.2rem;
+}
 
-  /* Layout */
-  /* display: grid;
-  grid-template-columns: 24px 140px minmax(300px, 1fr);
-  grid-template-areas: "checkbox dayOfWeek pickers"; */
+.subheading {
+  margin: 16px 0 32px;
+  color: #6d6b6b;
+  font-size: 1.5rem;
+  line-height: 1.25rem;
+  font-weight: var(--fontWeightSemiBold);
+  text-align: center;
+}
+
+.error {
+  color: var(--failColor);
+}
+
+.timezonePicker {
+  margin-top: 0.313rem;
+  margin-bottom: 2rem;
+}
+
+.week {
+  display: flex;
+  /* justify-content: space-around; */
+  /* overflow-x: scroll; */
+  gap: 31px;
+  flex-wrap: wrap;
+  @media (max-width: 767px) {
+    gap: 12px;
+  }
+ &>span{
+  border-radius: 100px;
+  height: 60px;
+  width: 60px;
+  border: 2px solid #E3E3E3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover, &:focus, &:active {
+    color: #361fef;
+    background: #005aff26;
+    border: none;
+  }
+ }
+}
+.selectedDay{
+  color: #361fef;
+  background: #005aff26;
+  border: none !important;
+}
+.contentDetails{
+  & .buttonSetHours{
+   display: none;
+  }
+  & .fieldWrapper{
+    /* display: none; */
+ }
+ }
+ 
+.dayButtons{
+  display: flex;
+  flex-direction: column;
+
+}
+.weekDay {
+  font-weight: var(--fontWeightMedium);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  color: var(--matterColorDark);
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-
-  padding-top: 10px;
-  padding-bottom: 13px;
-  border-top: solid 1px var(--colorGrey100);
-
+  justify-content: space-between;
+  padding: 0.5rem 0;
+height: 100%;
   &:last-child {
-    border-bottom: solid 1px var(--colorGrey100);
+    padding-bottom: 0;
+  }
+  & button{
+    text-transform: capitalize;
+  }
+  &.hasEntries {
+    background-color: var(--matterColorLight);
+    display: block;
+
+    & .dayOfWeek {
+      margin-bottom: 0.5rem;
+      border-radius: 100px;
+      height: 60px;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+         /* border: 2px solid #E3E3E3; */
+    }
+    & .dayOfWeekSelected {
+      border: none;
+      background: #005aff26;
+      color: #878ceb;
+      font-weight: 600;
+      &:hover, &:active, &:focus{
+        text-decoration: none;
+      }
+    }
   }
 
-  @media (--viewportMedium) {
-    padding-top: 8px;
-    padding-bottom: 16px;
-  }
 }
 
-.hasEntries {
-  background-color: var(--colorWhite);
-}
-
-.dayToggle {
-  padding-top: 3px;
-
-  @media (--viewportMedium) {
-    padding-top: 8px;
-  }
-}
-
-.dayOfWeek {
-  width: 140px;
-  padding-top: 6px;
-
-  @media (--viewportMedium) {
-    width: 140px;
-    padding-top: 8px;
-  }
-}
-.pickerArea {
-  flex-grow: 1;
-}
-.timePicker {
-  width: 100%;
-}
-
-.fieldWrapper {
-  /* This container uses flexbox layout */
+.openCheckBox{
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
-
-  /* parent aka root is flexbox, this container takes all available space */
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  padding-bottom: 6px;
-
-  position: relative;
-
-  @media (--viewportMedium) {
-    padding-bottom: 8px;
+  margin: 16px 0;
+  max-width: 254px;
+  gap: 42px;
+  @media (max-width: 767px) {
+    max-width: 220px;
+    gap: 18px;
+  }
+  & span{
+    color: #6d6b6b;
   }
 }
+.selectTime{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.dayOfWeek {}
 
+.timePicker {
+
+  & .fieldWrapper {
+    display: flex;
+    border-bottom: 1px solid var(--matterColorNegative);
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    padding-bottom: 0.625rem;
+    margin-bottom: 0.625rem;
+    position: relative;
+  }
+}
+.fieldWrapper{
+  margin: 12px 0;
+}
 .formRow {
-  /* parent aka fieldWrapper is flexbox, this container takes all available space */
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-
   /* This container uses flexbox layout */
   display: flex;
   justify-content: flex-start;
   align-items: center;
 
+  /* parent aka fieldWrapper is flexbox, this container takes all available space */
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+
   z-index: 1;
-}
-.formRowHidden {
-  display: none;
+  & label{
+    position: absolute;
+    top: -8px;
+    left: 7px;
+    padding: 0px 3px;
+    background: #ffffff;
+    color: #8080809c;
+    font-weight: 500;
+  }
 }
 
 .closeIcon {
-  composes: marketplaceModalCloseIcon from global;
-
+  @apply --marketplaceModalCloseIcon;
   stroke: none;
-  fill: var(--colorGrey300);
-  /* align icon with the select fields */
-  padding: 5px 0 7px 0;
+  fill: var(--matterColorAnti);
 
   &:hover {
-    fill: var(--colorGrey700);
-  }
-
-  @media (--viewportMedium) {
-    padding: 6px 0;
+    fill: var(--matterColor);
   }
 }
 
 .dashBetweenTimes {
   padding-left: 6px;
   padding-right: 6px;
+  padding-bottom: 8px;
 }
 
-.plus1Day {
-  composes: marketplaceTinyFontStyles from global;
-  color: var(--colorGrey300);
-  visibility: hidden;
-  opacity: 0;
-  padding: 5px 0 1px 0;
-  margin: 0 0px 0 8px;
+.buttonSetHours {
 
-  @media (--viewportMedium) {
-    padding: 6px 0 2px 0;
-    margin: 0 0px 0 8px;
-  }
-}
-.showPlus1Day {
-  visibility: visible;
-  opacity: 1;
+
+    &>div{
+      border-radius: 100px;
+      height: 60px;
+      width: 60px;
+      border: 2px solid #E3E3E3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 }
 
 .buttonAddNew {
-  composes: h5 from global;
-  color: var(--colorGrey700);
+  @apply --marketplaceH5FontStyles;
+  text-align: left;
+  margin: 12px 0 0;
+  color: #878ceb;
+  font-weight: 600;
+}
 
-  @media (--viewportMedium) {
-    margin-bottom: 6px;
+.submitButton {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-top: 3rem;
+ text-align: right;
+  &>button {
+    border: none;
+    color: #878ceb;
+    font-weight: 600;
+    &:hover {
+      color: #361fef;
+    }
   }
 }
 
 .fieldSelect {
-  composes: marketplaceTabNavHorizontalFontStyles from global;
+  @apply --marketplaceTabNavHorizontalFontStyles;
   background: none;
-  padding: 6px 12px 4px 12px;
-  min-width: 87px;
-  text-align: center;
-
+  height: 56px;
+  width: 280px;
+  border-radius: 6px;
+  @media (max-width: 767px) {
+    width: 110px;
+  }
   &:select {
     margin-right: 0;
   }
-}
-.notSelected {
-  color: var(--colorGrey300);
 }
